@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('title', 'Struktur Organisasi HMIF ITATS — Kepengurusan & Divisi')
-@section('meta_description', 'Susunan Badan Pengurus Harian dan pengurus enam divisi HMIF ITATS per periode kepengurusan.')
+@section('meta_description', 'Susunan Badan Pengurus Harian dan pengurus divisi HMIF ITATS per periode kepengurusan.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-wrap items-end justify-between gap-6">
             <div>
-                <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Kepengurusan Resmi</div>
+                <div class="font-mono text-xs text-on-band uppercase tracking-wider">Kepengurusan Resmi</div>
                 <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Struktur Organisasi</h1>
                 @if($selectedPeriod)
-                    <p class="mt-2 text-slate-300">
+                    <p class="mt-2 text-band-muted">
                         Periode {{ $selectedPeriod->name }} &mdash; {{ $selectedPeriod->cabinet_name }}
                         @if($selectedPeriod->is_active)
-                            <span class="ml-2 inline-block rounded-full bg-emerald-500/20 border border-emerald-400/40 px-2.5 py-0.5 font-mono text-xs text-emerald-300">AKTIF</span>
+                            <span class="ml-2 inline-block rounded-full bg-primary px-2.5 py-0.5 font-mono text-xs font-semibold text-on-primary">AKTIF</span>
                         @else
-                            <span class="ml-2 inline-block rounded-full bg-slate-700 px-2.5 py-0.5 font-mono text-xs text-slate-300">ARSIP</span>
+                            <span class="ml-2 inline-block rounded-full border border-border px-2.5 py-0.5 font-mono text-xs text-band-muted">ARSIP</span>
                         @endif
                     </p>
                 @endif
@@ -23,9 +23,9 @@
 
             @if($allPeriods->count() > 1)
                 <form method="GET" action="{{ route('struktur') }}" class="flex items-center gap-2">
-                    <label for="periode" class="text-xs font-mono text-slate-300">Periode:</label>
+                    <label for="periode" class="text-xs font-mono text-band-muted">Periode:</label>
                     <select id="periode" name="periode" onchange="this.form.submit()"
-                        class="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white">
+                        class="rounded-lg border border-border-input bg-surface px-3 py-2 text-sm text-text">
                         @foreach($allPeriods as $periodItem)
                             <option value="{{ $periodItem->name }}" @selected($selectedPeriod && $selectedPeriod->id === $periodItem->id)>
                                 {{ $periodItem->name }} ({{ $periodItem->cabinet_name }})
@@ -47,8 +47,15 @@
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 @forelse($coreMembers as $member)
                     <div class="rounded-2xl border border-line bg-surface p-6 text-center">
-                        <img src="{{ $member->photo_url }}" alt="{{ $member->name }}"
-                            class="mx-auto h-24 w-24 rounded-full object-cover border-2 border-white shadow-sm bg-white">
+                        @if($member->photo_path)
+                            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}"
+                                class="mx-auto h-24 w-24 rounded-full object-cover border-2 border-border bg-surface-raised">
+                        @else
+                            <svg viewBox="0 0 160 160" fill="none" aria-hidden="true" class="mx-auto h-24 w-24 rounded-full border-2 border-border bg-surface-raised text-text-muted">
+                                <circle cx="80" cy="60" r="24" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" />
+                                <path d="M40 132C44 108 60 98 80 98C100 98 116 108 120 132" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round" />
+                            </svg>
+                        @endif
                         <h3 class="mt-4 font-display text-base font-bold text-ink-950">{{ $member->name }}</h3>
                         <p class="mt-1 text-sm font-medium text-brand-700">{{ $member->position }}</p>
                     </div>
@@ -62,7 +69,7 @@
     <section class="py-14 bg-surface">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mb-8">
-                <div class="font-mono text-xs font-semibold uppercase tracking-wider text-cyan-600">02 // Bidang Kerja</div>
+                <div class="font-mono text-xs font-semibold uppercase tracking-wider text-link">02 // Bidang Kerja</div>
                 <h2 class="font-display text-2xl font-bold text-ink-950 mt-1">Pengurus Divisi</h2>
             </div>
 
@@ -85,8 +92,15 @@
                         <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             @forelse($division->members as $member)
                                 <div class="flex items-center gap-3.5 rounded-xl border border-line bg-surface p-3.5">
-                                    <img src="{{ $member->photo_url }}" alt="{{ $member->name }}"
-                                        class="h-12 w-12 rounded-full object-cover flex-shrink-0 bg-white border border-line">
+                                    @if($member->photo_path)
+                                        <img src="{{ $member->photo_url }}" alt="{{ $member->name }}"
+                                            class="h-12 w-12 rounded-full object-cover flex-shrink-0 bg-surface-raised border border-line">
+                                    @else
+                                        <svg viewBox="0 0 160 160" fill="none" aria-hidden="true" class="h-12 w-12 rounded-full flex-shrink-0 bg-surface-raised border border-line text-text-muted">
+                                            <circle cx="80" cy="60" r="24" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" />
+                                            <path d="M40 132C44 108 60 98 80 98C100 98 116 108 120 132" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round" />
+                                        </svg>
+                                    @endif
                                     <div class="min-w-0">
                                         <div class="font-semibold text-sm text-ink-950 truncate">{{ $member->name }}</div>
                                         <div class="text-xs text-ink-500 truncate">{{ $member->position }}</div>

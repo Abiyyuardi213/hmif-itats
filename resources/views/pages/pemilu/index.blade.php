@@ -4,11 +4,11 @@
 @section('meta_description', 'Sistem E-Voting terverifikasi berbasis token sekali pakai dan arsip hasil Pemilu Raya HMIF ITATS.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Demokrasi Kampus</div>
+            <div class="font-mono text-xs text-on-band uppercase tracking-wider">Demokrasi Kampus</div>
             <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Pemilu Raya HMIF ITATS</h1>
-            <p class="mt-2 text-slate-300 max-w-2xl">
+            <p class="mt-2 text-band-muted max-w-2xl">
                 Sistem E-Voting dengan verifikasi Daftar Pemilih Tetap (DPT), tautan token sekali pakai melalui email terdaftar, serta pemisahan identitas pemilih dan suara untuk menjamin asas Luber Jurdil.
             </p>
         </div>
@@ -23,11 +23,11 @@
             @elseif($election->isCurrentlyOpen())
                 <div class="grid lg:grid-cols-12 gap-8 items-start">
                     <div class="lg:col-span-7 space-y-4">
-                        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
-                            <div class="font-mono text-xs font-bold uppercase text-emerald-800">PEMUNGUTAN SUARA DIBUKA</div>
-                            <h2 class="mt-1 font-display text-xl font-bold text-ink-950">{{ $election->title }}</h2>
-                            <p class="mt-1 text-sm text-ink-700">{{ $election->description }}</p>
-                            <div class="mt-2 font-mono text-xs text-emerald-800">
+                        <div class="rounded-2xl border border-success bg-success-surface p-5">
+                            <div class="font-mono text-xs font-bold uppercase text-success">PEMUNGUTAN SUARA DIBUKA</div>
+                            <h2 class="mt-1 font-display text-xl font-bold text-text">{{ $election->title }}</h2>
+                            <p class="mt-1 text-sm text-text-muted">{{ $election->description }}</p>
+                            <div class="mt-2 font-mono text-xs text-success">
                                 Jadwal: {{ $election->starts_at->timezone('Asia/Jakarta')->format('d M Y H:i') }} &mdash;
                                 {{ $election->ends_at->timezone('Asia/Jakarta')->format('d M Y H:i') }} WIB
                             </div>
@@ -91,7 +91,7 @@
                 <div class="rounded-2xl border border-line bg-white p-6 sm:p-8 space-y-6">
                     <div class="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-5">
                         <div>
-                            <span class="inline-block rounded-full bg-slate-100 border border-line px-3 py-1 font-mono text-xs font-semibold text-ink-700">
+                            <span class="inline-block rounded-full bg-bg-soft border border-border px-3 py-1 font-mono text-xs font-semibold text-text-muted">
                                 SESI PEMILU {{ strtoupper($election->statusLabel()) }}
                             </span>
                             <h2 class="mt-2 font-display text-2xl font-bold text-ink-950">{{ $election->title }}</h2>
@@ -120,7 +120,7 @@
                                             &amp; {{ $row['candidate']->wakil_name }}
                                         @endif
                                     </div>
-                                    <div class="mt-3 h-2 w-full rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="mt-3 h-2 w-full rounded-full bg-bg-soft overflow-hidden">
                                         <div class="h-full bg-brand-600 rounded-full" style="width: {{ $pct }}%"></div>
                                     </div>
                                 </div>

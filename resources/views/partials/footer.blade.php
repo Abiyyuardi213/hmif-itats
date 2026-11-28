@@ -1,38 +1,61 @@
-<footer class="bg-ink-950 text-slate-300 border-t border-slate-800">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+@php
+    $socialLinks = collect([
+        'Instagram' => $orgSettings['instagram_url'] ?? '',
+        'GitHub' => $orgSettings['github_url'] ?? '',
+        'LinkedIn' => $orgSettings['linkedin_url'] ?? '',
+        'YouTube' => $orgSettings['youtube_url'] ?? '',
+    ])->filter(function (?string $url): bool {
+        $trimmed = trim((string) $url);
+
+        return $trimmed !== '' && $trimmed !== '#' && str_starts_with($trimmed, 'http');
+    });
+
+    $officialEmail = trim((string) ($orgSettings['email'] ?? ''));
+    $officialPhone = trim((string) ($orgSettings['phone'] ?? ''));
+    $officialAddress = trim((string) ($orgSettings['address'] ?? ''));
+    $openElection = $openElection ?? null;
+@endphp
+
+<footer class="bg-band text-band-text border-t border-border-on-band mt-auto">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-14">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-5 space-y-4">
                 <div class="flex items-center gap-3">
-                    <img src="{{ asset('image/hima.png') }}" alt="Logo HMIF ITATS" class="h-11 w-11 rounded-xl bg-white p-1.5 object-contain">
+                    <span class="inline-flex h-12 w-12 items-center justify-center rounded-[12px] bg-plate p-1.5 border border-border-on-band shrink-0">
+                        <img
+                            src="{{ asset('image/icon-hmif.jpg') }}"
+                            alt="Logo HMIF ITATS"
+                            width="40"
+                            height="40"
+                            loading="lazy"
+                            class="h-9 w-9 rounded-md object-contain"
+                        >
+                    </span>
                     <div>
-                        <div class="font-display text-lg font-bold text-white">
-                            {{ $orgSettings['org_name'] ?? 'Himpunan Mahasiswa Teknik Informatika' }}
+                        <div class="font-display text-lg font-bold text-band-text">
+                            HMIF ITATS
                         </div>
-                        <div class="text-xs font-mono uppercase tracking-wider text-cyan-400">
+                        <div class="text-xs font-medium text-on-band">
                             {{ $orgSettings['campus_name'] ?? 'Institut Teknologi Adhi Tama Surabaya' }}
                         </div>
                     </div>
                 </div>
-                <p class="text-sm leading-relaxed text-slate-400 max-w-md">
+
+                <p class="text-sm leading-relaxed text-band-muted max-w-[42ch]">
                     Wadah pengembangan kompetensi akademik, rekayasa perangkat lunak, kepemimpinan, dan kolaborasi mahasiswa Teknik Informatika ITATS.
                 </p>
 
-                @php
-                    $socialLinks = array_filter([
-                        'Instagram' => $orgSettings['instagram_url'] ?? '',
-                        'GitHub' => $orgSettings['github_url'] ?? '',
-                        'LinkedIn' => $orgSettings['linkedin_url'] ?? '',
-                        'YouTube' => $orgSettings['youtube_url'] ?? '',
-                    ]);
-                @endphp
-
-                @if(! empty($socialLinks))
+                @if($socialLinks->isNotEmpty())
                     <div class="flex flex-wrap gap-2 pt-1">
                         @foreach($socialLinks as $label => $url)
-                            <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/70 px-3 py-1.5 text-xs font-medium text-slate-200 hover:border-cyan-500 hover:text-white transition">
+                            <a
+                                href="{{ $url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="min-h-11 inline-flex items-center gap-1.5 rounded-full border border-border-on-band px-4 py-2 text-xs font-medium text-band-text hover:text-on-band transition-colors"
+                            >
                                 <span>{{ $label }}</span>
-                                <span aria-hidden="true">&#8599;</span>
+                                <x-icon name="arrow-up-right" size="14" />
                             </a>
                         @endforeach
                     </div>
@@ -40,50 +63,79 @@
             </div>
 
             <div class="lg:col-span-3">
-                <h2 class="font-display text-sm font-bold uppercase tracking-wider text-white mb-4">Navigasi Portal</h2>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="{{ route('about') }}" class="hover:text-white transition">Tentang HMIF</a></li>
-                    <li><a href="{{ route('struktur') }}" class="hover:text-white transition">Struktur Kepengurusan</a></li>
-                    <li><a href="{{ route('divisi.index') }}" class="hover:text-white transition">Enam Divisi</a></li>
-                    <li><a href="{{ route('proker.index') }}" class="hover:text-white transition">Program Kerja</a></li>
-                    <li><a href="{{ route('kegiatan.index') }}" class="hover:text-white transition">Kegiatan</a></li>
-                    <li><a href="{{ route('pengumuman.index') }}" class="hover:text-white transition">Pengumuman</a></li>
-                    <li><a href="{{ route('pemilu.index') }}" class="hover:text-white transition">Pemilu &amp; Arsip</a></li>
+                <h2 class="font-display text-sm font-semibold text-band-text mb-3">
+                    Navigasi portal
+                </h2>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="{{ route('about') }}" class="min-h-11 inline-flex items-center text-band-muted hover:text-band-text hover:underline">Tentang HMIF ITATS</a></li>
+                    <li><a href="{{ route('struktur') }}" class="min-h-11 inline-flex items-center text-band-muted hover:text-band-text hover:underline">Struktur organisasi</a></li>
+                    <li><a href="{{ route('divisi.index') }}" class="min-h-11 inline-flex items-center text-band-muted hover:text-band-text hover:underline">Divisi</a></li>
+                    <li><a href="{{ route('proker.index') }}" class="min-h-11 inline-flex items-center text-band-muted hover:text-band-text hover:underline">Program kerja</a></li>
+                    <li><a href="{{ route('kegiatan.index') }}" class="min-h-11 inline-flex items-center text-band-muted hover:text-band-text hover:underline">Kegiatan</a></li>
+                    <li><a href="{{ route('pengumuman.index') }}" class="min-h-11 inline-flex items-center text-band-muted hover:text-band-text hover:underline">Pengumuman</a></li>
+                    <li>
+                        <a href="{{ route('pemilu.index') }}" class="min-h-11 inline-flex items-center text-band-muted hover:text-band-text hover:underline">
+                            {{ $openElection ? 'Pemilu (berlangsung)' : 'Pemilu dan arsip' }}
+                        </a>
+                    </li>
                 </ul>
             </div>
 
             <div class="lg:col-span-4">
-                <h2 class="font-display text-sm font-bold uppercase tracking-wider text-white mb-4">Sekretariat &amp; Kontak</h2>
-                <dl class="space-y-3 text-sm">
-                    <div>
-                        <dt class="text-xs font-mono uppercase text-slate-500">Email Resmi</dt>
-                        <dd>
-                            <a href="mailto:{{ $orgSettings['email'] ?? 'hmif@itats.ac.id' }}" class="text-slate-200 hover:text-cyan-400 transition">
-                                {{ $orgSettings['email'] ?? 'hmif@itats.ac.id' }}
-                            </a>
-                        </dd>
+                <h2 class="font-display text-sm font-semibold text-band-text mb-3">
+                    Sekretariat dan kontak
+                </h2>
+                @if($officialEmail !== '' || $officialPhone !== '' || $officialAddress !== '')
+                    <dl class="space-y-3 text-sm">
+                        @if($officialEmail !== '')
+                            <div>
+                                <dt class="text-xs text-band-muted">Email resmi</dt>
+                                <dd>
+                                    <a href="mailto:{{ $officialEmail }}" class="min-h-11 inline-flex items-center text-on-band hover:underline">
+                                        {{ $officialEmail }}
+                                    </a>
+                                </dd>
+                            </div>
+                        @endif
+                        @if($officialPhone !== '')
+                            <div>
+                                <dt class="text-xs text-band-muted">Telepon kampus</dt>
+                                <dd class="text-band-text">{{ $officialPhone }}</dd>
+                            </div>
+                        @endif
+                        @if($officialAddress !== '')
+                            <div>
+                                <dt class="text-xs text-band-muted">Alamat</dt>
+                                <dd class="text-band-muted leading-relaxed">{{ $officialAddress }}</dd>
+                            </div>
+                        @endif
+                    </dl>
+                @else
+                    <p class="text-sm text-band-muted leading-relaxed max-w-[36ch]">
+                        Saluran pesan resmi organisasi tersedia melalui formulir kontak portal.
+                    </p>
+                    <div class="mt-3">
+                        <a href="{{ route('kontak') }}" class="min-h-11 inline-flex items-center gap-1.5 text-sm font-medium text-on-band hover:underline">
+                            <span>Kirim pesan lewat Kontak HMIF</span>
+                            <x-icon name="arrow-right" size="16" />
+                        </a>
                     </div>
-                    <div>
-                        <dt class="text-xs font-mono uppercase text-slate-500">Telepon Kampus</dt>
-                        <dd class="text-slate-200">{{ $orgSettings['phone'] ?? '+62 31 5991101' }}</dd>
-                    </div>
-                    <div>
-                        <dt class="text-xs font-mono uppercase text-slate-500">Alamat</dt>
-                        <dd class="text-slate-300 leading-relaxed">
-                            {{ $orgSettings['address'] ?? 'Jl. Arief Rachman Hakim No. 100, Surabaya 60117' }}
-                        </dd>
-                    </div>
-                </dl>
+                @endif
             </div>
         </div>
 
-        <div class="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div class="mt-12 pt-6 border-t border-border-on-band flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-band-muted">
             <p>
-                &copy; {{ date('Y') }} <strong class="text-slate-200">HMIF ITATS</strong> — Institut Teknologi Adhi Tama Surabaya.
+                &copy; {{ date('Y') }} <strong class="text-band-text">HMIF ITATS</strong> — Institut Teknologi Adhi Tama Surabaya.
             </p>
-            <div class="flex items-center gap-5">
-                <a href="{{ route('kontak') }}" class="hover:text-white transition">Kirim Aspirasi</a>
-                <a href="{{ route('sitemap') }}" class="hover:text-white transition">Sitemap</a>
+            <div class="flex flex-wrap items-center gap-4">
+                <a href="{{ route('kontak') }}" class="min-h-11 inline-flex items-center hover:text-band-text hover:underline">Kontak HMIF</a>
+                <a href="{{ route('sitemap') }}" class="min-h-11 inline-flex items-center hover:text-band-text hover:underline">Peta situs</a>
+                @auth
+                    <a href="{{ route('admin.dashboard') }}" class="min-h-11 inline-flex items-center hover:text-band-text hover:underline">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="min-h-11 inline-flex items-center hover:text-band-text hover:underline">Portal pengurus</a>
+                @endauth
             </div>
         </div>
     </div>

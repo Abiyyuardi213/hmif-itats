@@ -80,7 +80,7 @@
                             <div class="font-mono text-xs text-brand-700 font-semibold">
                                 {{ $activity->category }} &middot; {{ $activity->event_date->translatedFormat('d M Y') }}
                                 @if(! $activity->is_published)
-                                    <span class="text-amber-700">(DRAFT)</span>
+                                    <span class="text-text-muted">(DRAFT)</span>
                                 @endif
                             </div>
                             <div class="font-display font-bold text-ink-950 truncate">{{ $activity->title }}</div>
@@ -92,7 +92,7 @@
                         <form method="POST" action="{{ route('admin.kegiatan.destroy', $activity) }}" onsubmit="return confirm('Hapus kegiatan ini?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700">Hapus</button>
+                            <button type="submit" class="rounded-lg border border-danger bg-danger-surface px-3 py-1.5 text-xs font-semibold text-danger">Hapus</button>
                         </form>
                     </div>
                 </div>

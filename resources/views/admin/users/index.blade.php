@@ -41,7 +41,7 @@
                         <div class="font-display font-bold text-ink-950">
                             {{ $u->name }}
                             @if(! $u->is_active)
-                                <span class="ml-2 rounded bg-red-100 px-2 py-0.5 font-mono text-xs text-red-700">NONAKTIF</span>
+                                <span class="ml-2 rounded bg-danger-surface px-2 py-0.5 font-mono text-xs text-danger">NONAKTIF</span>
                             @endif
                         </div>
                         <div class="text-xs text-ink-500">{{ $u->email }}</div>

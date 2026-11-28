@@ -4,11 +4,11 @@
 @section('meta_description', 'Papan informasi resmi, rekrutmen, jadwal organisasi, dan pembaruan penting dari HMIF ITATS.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Papan Informasi</div>
+            <div class="font-mono text-xs text-on-band uppercase tracking-wider">Papan Informasi</div>
             <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Pengumuman Resmi</h1>
-            <p class="mt-2 text-slate-300 max-w-2xl">
+            <p class="mt-2 text-band-muted max-w-2xl">
                 Informasi terbaru terkait kepengurusan, agenda akademik, rekrutmen panitia, dan arsip keputusan HMIF ITATS.
             </p>
         </div>
@@ -36,7 +36,7 @@
                             <div class="flex items-center gap-2">
                                 <span class="rounded bg-brand-50 px-2.5 py-0.5 text-brand-700 font-semibold">{{ $item->category }}</span>
                                 @if($item->is_pinned)
-                                    <span class="rounded bg-amber-100 px-2.5 py-0.5 text-amber-800 font-semibold">DISAMATKAN</span>
+                                    <span class="rounded border border-border bg-warning-surface px-2.5 py-0.5 text-text font-semibold">DISAMATKAN</span>
                                 @endif
                             </div>
                             <time datetime="{{ optional($item->published_at)->toIso8601String() }}">

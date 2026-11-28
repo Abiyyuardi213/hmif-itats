@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Enam Divisi HMIF ITATS — Bidang & Fokus Kerja')
-@section('meta_description', 'Daftar lengkap enam divisi aktif di bawah Himpunan Mahasiswa Teknik Informatika ITATS beserta anggota dan program kerjanya.')
+@section('title', 'Divisi HMIF ITATS — Bidang & Fokus Kerja')
+@section('meta_description', 'Daftar lengkap divisi aktif di bawah Himpunan Mahasiswa Teknik Informatika ITATS beserta anggota dan program kerjanya.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Organisasi</div>
+            <div class="font-mono text-xs text-on-band uppercase tracking-wider">Organisasi</div>
             <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Divisi HMIF ITATS</h1>
-            <p class="mt-3 text-slate-300 max-w-2xl">
+            <p class="mt-3 text-band-muted max-w-2xl">
                 Bidang kerja yang menjalankan roda kaderisasi, riset teknologi, publikasi media, relasi eksternal, pengabdian sosial, hingga pengembangan sistem digital.
             </p>
         </div>

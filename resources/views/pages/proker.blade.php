@@ -4,11 +4,11 @@
 @section('meta_description', 'Daftar program kerja resmi HMIF ITATS beserta status pelaksanaan dan penanggung jawab divisi.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Transparansi Kerja</div>
+            <div class="font-mono text-xs text-on-band uppercase tracking-wider">Transparansi Kerja</div>
             <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Program Kerja</h1>
-            <p class="mt-2 text-slate-300 max-w-2xl">
+            <p class="mt-2 text-band-muted max-w-2xl">
                 @if($period)
                     Daftar terpadu program kerja Periode {{ $period->name }} ({{ $period->cabinet_name }}).
                 @else
@@ -17,20 +17,20 @@
             </p>
 
             <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl">
-                <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-4">
-                    <div class="font-mono text-xs text-slate-400">Total Proker</div>
+                <div class="rounded-xl border border-border bg-band/80 p-4">
+                    <div class="font-mono text-xs text-band-muted">Total Proker</div>
                     <div class="font-display text-2xl font-bold mt-1">{{ $summary['total'] }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-4">
-                    <div class="font-mono text-xs text-emerald-300">Terlaksana</div>
+                <div class="rounded-xl border border-border bg-band/80 p-4">
+                    <div class="font-mono text-xs text-on-band">Terlaksana</div>
                     <div class="font-display text-2xl font-bold mt-1">{{ $summary['completed'] }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-4">
-                    <div class="font-mono text-xs text-amber-300">Berjalan</div>
+                <div class="rounded-xl border border-border bg-band/80 p-4">
+                    <div class="font-mono text-xs text-on-band">Berjalan</div>
                     <div class="font-display text-2xl font-bold mt-1">{{ $summary['in_progress'] }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-4">
-                    <div class="font-mono text-xs text-slate-300">Direncanakan</div>
+                <div class="rounded-xl border border-border bg-band/80 p-4">
+                    <div class="font-mono text-xs text-band-muted">Direncanakan</div>
                     <div class="font-display text-2xl font-bold mt-1">{{ $summary['planned'] }}</div>
                 </div>
             </div>
@@ -66,9 +66,9 @@
                 @forelse($programs as $program)
                     @php
                         $badgeColor = match ($program->status) {
-                            'completed' => 'bg-emerald-50 text-emerald-800 border-emerald-200',
-                            'in_progress' => 'bg-amber-50 text-amber-800 border-amber-200',
-                            default => 'bg-slate-100 text-slate-700 border-slate-200',
+                            'completed' => 'bg-success-surface text-success border-success',
+                            'in_progress' => 'bg-warning-surface text-text border-border',
+                            default => 'bg-bg-soft text-text-muted border-border',
                         };
                     @endphp
                     <article class="rounded-2xl border border-line bg-white p-6 flex flex-col justify-between">

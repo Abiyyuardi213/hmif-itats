@@ -60,7 +60,7 @@
                             <span class="font-display text-lg font-bold text-ink-950">{{ $period->name }}</span>
                             <span class="text-sm text-ink-600">&mdash; {{ $period->cabinet_name }}</span>
                             @if($period->is_active)
-                                <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 font-mono text-xs font-semibold text-emerald-800">AKTIF</span>
+                                <span class="rounded-full border border-success bg-success-surface px-2.5 py-0.5 font-mono text-xs font-semibold text-success">AKTIF</span>
                             @endif
                         </div>
                         <div class="mt-1 font-mono text-xs text-ink-500">
@@ -71,12 +71,12 @@
                         @if(! $period->is_active)
                             <form method="POST" action="{{ route('admin.periods.activate', $period) }}">
                                 @csrf
-                                <button type="submit" class="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-100">
+                                <button type="submit" class="rounded-lg border border-success bg-success-surface px-3 py-1.5 text-xs font-semibold text-success hover:bg-bg-soft">
                                     Aktifkan
                                 </button>
                             </form>
                         @endif
-                        <a href="{{ route('admin.periods.edit', $period) }}" class="rounded-lg border border-line px-3 py-1.5 text-xs font-semibold hover:bg-slate-50">
+                        <a href="{{ route('admin.periods.edit', $period) }}" class="rounded-lg border border-line px-3 py-1.5 text-xs font-semibold hover:bg-bg">
                             Edit
                         </a>
                     </div>

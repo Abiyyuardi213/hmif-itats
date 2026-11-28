@@ -1,0 +1,139 @@
+/* DESIGN.md v1.1 — 3-tier design token architecture (primitives -> semantic -> component) */
+
+/* Tier 1 — Primitives (never referenced directly by components or views) */
+:root {
+    /* Typography families */
+    --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-editorial: 'Fraunces Variable', Georgia, serif;
+    --font-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, monospace;
+
+    /* Ink: navy from Kabinet Asakusa logo. Dark-mode base (not pure black). */
+    --p-ink-950: #0A1429;
+    --p-ink-900: #0F1C38;
+    --p-ink-800: #16264D;
+    --p-ink-700: #20336B;
+
+    /* Paper / sky: light-mode base */
+    --p-paper-50: #F5F7FC;
+    --p-sky-100: #E3EEFB;
+
+    /* Gold Asakusa: primary button fill & band accent. Never text on light theme. */
+    --p-gold-300: #E5BE6A;
+    --p-gold-400: #D4A340;
+    --p-gold-500: #B98A26;
+
+    /* Orbit: cerulean ring from official HMIF logo */
+    --p-orbit-400: #4DB3F0;
+    --p-orbit-500: #028ADE;
+    --p-orbit-700: #0369A1;
+
+    /* Electric: Asakusa arrow accent for focus ring */
+    --p-electric-400: #5B9DFF;
+    --p-electric-500: #157BFD;
+
+    /* Text primitives */
+    --p-text-light: #0F1C38;
+    --p-muted-light: #4A5878;
+    --p-text-dark: #F3F6FC;
+    --p-muted-dark: #AEB9D3;
+
+    /* Status primitives */
+    --p-green-600: #15803D;
+    --p-green-400: #4ADE80;
+    --p-red-600: #DC2626;
+    --p-red-400: #F87171;
+}
+
+/* Tier 2 — Semantic tokens (light default, dark intentionally designed) */
+:root,
+[data-theme='light'] {
+    color-scheme: light;
+    --bg: var(--p-paper-50);
+    --bg-soft: var(--p-sky-100);
+    --surface: #FFFFFF;
+    --surface-raised: #FFFFFF;
+    --border: rgba(15, 28, 56, 0.14);
+    --border-input: var(--p-muted-light);
+    --text: var(--p-text-light);
+    --text-muted: var(--p-muted-light);
+    --primary: var(--p-gold-400);
+    --primary-hover: var(--p-gold-500);
+    --on-primary: var(--p-ink-950);
+    --link: var(--p-orbit-700);
+    --accent: var(--p-orbit-500);
+    --focus-ring: var(--p-electric-500);
+    --band: var(--p-ink-900);
+    --on-band: var(--p-gold-300);
+    --band-text: var(--p-text-dark);
+    --band-muted: var(--p-muted-dark);
+    --border-on-band: rgba(255, 255, 255, 0.45);
+    --success: var(--p-green-600);
+    --danger: var(--p-red-600);
+    --success-surface: color-mix(in srgb, var(--success) 3%, var(--surface));
+    --danger-surface: color-mix(in srgb, var(--danger) 3%, var(--surface));
+    --warning-surface: color-mix(in srgb, var(--primary) 16%, var(--surface));
+    --scrim: rgba(10, 20, 41, 0.55);
+    --shadow-card: 0 12px 32px -14px rgba(15, 28, 56, 0.28);
+    --plate-bg: #FFFFFF;
+}
+
+[data-theme='dark'] {
+    color-scheme: dark;
+    --bg: var(--p-ink-950);
+    --bg-soft: var(--p-ink-900);
+    --surface: var(--p-ink-900);
+    --surface-raised: var(--p-ink-800);
+    --border: rgba(255, 255, 255, 0.12);
+    --border-input: var(--p-muted-dark);
+    --text: var(--p-text-dark);
+    --text-muted: var(--p-muted-dark);
+    --primary: var(--p-gold-400);
+    --primary-hover: var(--p-gold-300);
+    --on-primary: var(--p-ink-950);
+    --link: var(--p-orbit-400);
+    --accent: var(--p-orbit-500);
+    --focus-ring: var(--p-electric-400);
+    --band: var(--p-ink-800);
+    --on-band: var(--p-gold-300);
+    --band-text: var(--p-text-dark);
+    --band-muted: var(--p-muted-dark);
+    --border-on-band: rgba(255, 255, 255, 0.45);
+    --success: var(--p-green-400);
+    --danger: var(--p-red-400);
+    --success-surface: color-mix(in srgb, var(--success) 14%, var(--surface));
+    --danger-surface: color-mix(in srgb, var(--danger) 14%, var(--surface));
+    --warning-surface: color-mix(in srgb, var(--primary) 18%, var(--surface));
+    --scrim: rgba(0, 0, 0, 0.6);
+    --shadow-card: none;
+    --plate-bg: var(--p-paper-50);
+}
+
+/* Tier 3 — Component tokens */
+:root {
+    --nav-bg: var(--surface);
+    --nav-border: var(--border);
+    --card-bg: var(--surface-raised);
+    --card-shadow: var(--shadow-card);
+    --window-bar-bg: var(--surface);
+    --window-title-font: var(--font-mono);
+    --stat-strip-bg: var(--surface);
+    --ticker-bg: var(--band);
+    --ticker-fg: var(--on-band);
+
+    /* Legacy aliases for admin panel — delete when admin is restyled */
+    --color-ink-950: var(--text);
+    --color-ink-900: var(--text);
+    --color-ink-700: var(--text-muted);
+    --color-ink-600: var(--text-muted);
+    --color-ink-500: var(--text-muted);
+    --color-brand-700: var(--link);
+    --color-brand-600: var(--link);
+    --color-brand-500: var(--focus-ring);
+    --color-brand-100: var(--bg-soft);
+    --color-brand-50: var(--bg-soft);
+    --color-cyan-600: var(--link);
+    --color-cyan-500: var(--accent);
+    --color-cyan-400: var(--on-band);
+    --color-line: var(--border);
+}

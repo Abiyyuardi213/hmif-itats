@@ -9,7 +9,7 @@
             <div class="rounded-2xl border border-line bg-white p-6 sm:p-8 shadow-sm">
                 <div class="flex flex-wrap items-center justify-between gap-2 pb-5 border-b border-line">
                     <div>
-                        <div class="font-mono text-xs text-emerald-700 font-semibold">TOKEN TERVERIFIKASI &middot; SATU KALI PAKAI</div>
+                        <div class="font-mono text-xs text-success font-semibold">TOKEN TERVERIFIKASI &middot; SATU KALI PAKAI</div>
                         <h1 class="mt-1 font-display text-2xl font-extrabold text-ink-950">{{ $election->title }}</h1>
                     </div>
                     <div class="text-xs font-mono text-ink-500">
@@ -48,7 +48,7 @@
                         @endforeach
                     </div>
 
-                    <button type="submit" class="w-full rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white hover:bg-emerald-700 transition">
+                    <button type="submit" class="w-full rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-on-primary hover:bg-primary-hover transition">
                         Kirim Suara Sah Saya
                     </button>
                 </form>

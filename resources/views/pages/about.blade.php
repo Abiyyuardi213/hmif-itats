@@ -4,11 +4,11 @@
 @section('meta_description', 'Profil resmi, visi, misi, dan jajaran pimpinan inti Himpunan Mahasiswa Teknik Informatika Institut Teknologi Adhi Tama Surabaya.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Profil Organisasi</div>
+            <div class="font-mono text-xs text-on-band uppercase tracking-wider">Profil Organisasi</div>
             <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Tentang HMIF ITATS</h1>
-            <p class="mt-3 text-slate-300 max-w-2xl">
+            <p class="mt-3 text-band-muted max-w-2xl">
                 Himpunan Mahasiswa Teknik Informatika — Institut Teknologi Adhi Tama Surabaya.
                 Ruang bertumbuh bagi mahasiswa informatika dalam riset, rekayasa perangkat lunak, dan pengabdian kampus.
             </p>
@@ -33,7 +33,7 @@
                     HMIF ITATS merupakan organisasi kemahasiswaan tingkat program studi S-1 Teknik Informatika yang berperan menjembatani aspirasi akademik, membangun budaya rekayasa teknologi, serta membina soft-skill kepemimpinan mahasiswa.
                 </p>
                 <p class="text-ink-700 leading-relaxed">
-                    Seluruh data kepengurusan, program kerja enam divisi, agenda kegiatan, serta layanan pemilu dikelola terpusat oleh pengurus resmi dan tim Divisi Pengembangan &amp; Sistem Digital.
+                    Seluruh data kepengurusan, program kerja divisi, agenda kegiatan, serta layanan pemilu dikelola terpusat oleh pengurus resmi dan tim Divisi Pengembangan &amp; Sistem Digital.
                 </p>
             </div>
         </div>
@@ -49,7 +49,7 @@
 
                 <div class="grid md:grid-cols-12 gap-6">
                     <div class="md:col-span-5 rounded-2xl border border-line bg-white p-6">
-                        <div class="font-mono text-xs uppercase text-cyan-600 font-semibold mb-2">Visi</div>
+                        <div class="font-mono text-xs uppercase text-link font-semibold mb-2">Visi</div>
                         <p class="text-ink-900 leading-relaxed font-medium">{{ $period->vision }}</p>
                     </div>
                     <div class="md:col-span-7 rounded-2xl border border-line bg-white p-6">
@@ -85,8 +85,15 @@
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 @foreach($coreMembers as $member)
                     <div class="rounded-2xl border border-line bg-surface p-6 text-center">
-                        <img src="{{ $member->photo_url }}" alt="{{ $member->name }}"
-                            class="mx-auto h-24 w-24 rounded-full object-cover border-2 border-white shadow-sm bg-white">
+                        @if($member->photo_path)
+                            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}"
+                                class="mx-auto h-24 w-24 rounded-full object-cover border-2 border-border bg-surface-raised">
+                        @else
+                            <svg viewBox="0 0 160 160" fill="none" aria-hidden="true" class="mx-auto h-24 w-24 rounded-full border-2 border-border bg-surface-raised text-text-muted">
+                                <circle cx="80" cy="60" r="24" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" />
+                                <path d="M40 132C44 108 60 98 80 98C100 98 116 108 120 132" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round" />
+                            </svg>
+                        @endif
                         <h3 class="mt-4 font-display text-base font-bold text-ink-950">{{ $member->name }}</h3>
                         <p class="mt-1 text-sm font-medium text-brand-700">{{ $member->position }}</p>
                         @if($period)

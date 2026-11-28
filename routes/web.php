@@ -26,6 +26,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::redirect('/home', '/', 301);
 
+if (app()->environment('local')) {
+    Route::view('/_styleguide', 'pages.styleguide')->name('styleguide');
+}
+
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/struktur', [HomeController::class, 'struktur'])->name('struktur');
 

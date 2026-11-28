@@ -5,8 +5,8 @@
 @section('content')
     <section class="py-16 bg-surface min-h-[65vh] flex items-center">
         <div class="mx-auto max-w-xl px-4">
-            <div class="rounded-2xl border border-emerald-200 bg-white p-8 text-center shadow-sm">
-                <div class="mx-auto h-12 w-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xl">
+            <div class="rounded-2xl border border-success bg-surface-raised p-8 text-center shadow-card">
+                <div class="mx-auto h-12 w-12 rounded-full bg-success-surface text-success flex items-center justify-center font-bold text-xl">
                     &#10003;
                 </div>
                 <h1 class="mt-4 font-display text-2xl font-extrabold text-ink-950">Suara Anda Telah Tercatat</h1>

@@ -1,18 +1,27 @@
-<div id="logoutModal" data-modal role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle"
-    class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs">
-    <div class="w-full max-w-md rounded-2xl border border-line bg-white p-6 shadow-2xl">
-        <h3 id="logoutModalTitle" class="font-display text-lg font-bold text-ink-950">Konfirmasi Keluar</h3>
-        <p class="mt-2 text-sm text-ink-500">
+<div
+    id="logoutModal"
+    data-modal
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="logoutModalTitle"
+    class="hidden fixed inset-0 z-50 items-center justify-center bg-scrim p-4"
+>
+    <div class="w-full max-w-md rounded-[20px] border border-border bg-surface-raised p-6 shadow-card">
+        <h3 id="logoutModalTitle" class="font-display text-lg font-bold text-text">Konfirmasi keluar</h3>
+        <p class="mt-2 text-sm text-text-muted">
             Apakah Anda yakin ingin mengakhiri sesi pengurus saat ini?
         </p>
         <div class="mt-6 flex items-center justify-end gap-3">
-            <button type="button" data-modal-close class="rounded-lg border border-line px-4 py-2 text-sm font-medium text-ink-700 hover:bg-slate-50 transition">
+            <x-button type="button" variant="secondary" data-modal-close>
                 Batal
-            </button>
+            </x-button>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition">
-                    Ya, Keluar
+                <button
+                    type="submit"
+                    class="min-h-11 inline-flex items-center justify-center rounded-full border-2 border-danger bg-danger-surface px-5 py-2.5 text-sm font-semibold text-text hover:bg-bg-soft transition-colors"
+                >
+                    Ya, keluar
                 </button>
             </form>
         </div>

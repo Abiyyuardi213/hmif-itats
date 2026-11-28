@@ -5,7 +5,7 @@
 @section('page_subtitle', 'Status: '.$pemilu->statusLabel().' | '.$stats['voted'].' / '.$stats['eligible'].' DPT telah memilih ('.$stats['ballots'].' suara anonim)')
 
 @section('header_actions')
-    <a href="{{ route('admin.pemilu.export', $pemilu) }}" class="rounded-xl border border-line bg-white px-4 py-2 text-xs font-semibold text-ink-950 hover:bg-slate-50">
+    <a href="{{ route('admin.pemilu.export', $pemilu) }}" class="rounded-xl border border-line bg-surface px-4 py-2 text-xs font-semibold text-ink-950 hover:bg-bg">
         Ekspor CSV Audit Pembina
     </a>
 @endsection

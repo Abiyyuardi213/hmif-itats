@@ -57,7 +57,14 @@
             @foreach($members as $member)
                 <div class="rounded-2xl border border-line bg-white p-4 flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-3.5">
-                        <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" class="h-12 w-12 rounded-full object-cover border border-line">
+                        @if($member->photo_path)
+                            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" class="h-12 w-12 rounded-full object-cover border border-line">
+                        @else
+                            <svg viewBox="0 0 160 160" fill="none" aria-hidden="true" class="h-12 w-12 rounded-full border border-line bg-surface-raised text-text-muted shrink-0">
+                                <circle cx="80" cy="60" r="24" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" />
+                                <path d="M40 132C44 108 60 98 80 98C100 98 116 108 120 132" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round" />
+                            </svg>
+                        @endif
                         <div>
                             <div class="font-display font-bold text-ink-950">{{ $member->name }}</div>
                             <div class="text-xs text-ink-500">
@@ -72,7 +79,7 @@
                         <form method="POST" action="{{ route('admin.members.destroy', $member) }}" onsubmit="return confirm('Hapus pengurus ini?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700">Hapus</button>
+                            <button type="submit" class="rounded-lg border border-danger bg-danger-surface px-3 py-1.5 text-xs font-semibold text-danger">Hapus</button>
                         </form>
                     </div>
                 </div>

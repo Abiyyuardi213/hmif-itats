@@ -4,11 +4,11 @@
 @section('meta_description', 'Dokumentasi kegiatan, seminar, workshop, pengabdian masyarakat, dan agenda kemahasiswaan Teknik Informatika ITATS.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Agenda &amp; Galeri</div>
+            <div class="font-mono text-xs text-on-band uppercase tracking-wider">Agenda &amp; Galeri</div>
             <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Kegiatan HMIF ITATS</h1>
-            <p class="mt-2 text-slate-300 max-w-2xl">
+            <p class="mt-2 text-band-muted max-w-2xl">
                 Rekam jejak kegiatan akademik, kaderisasi, kompetisi, dan sosial kemasyarakatan mahasiswa Informatika ITATS.
             </p>
         </div>

@@ -4,11 +4,11 @@
 @section('meta_description', 'Hubungi sekretariat HMIF ITATS atau sampaikan aspirasi, kolaborasi kegiatan, dan pertanyaan seputar himpunan.')
 
 @section('content')
-    <section class="bg-ink-950 text-white py-14 border-b border-slate-800 bg-tech-grid">
+    <section class="bg-band text-band-text py-14 border-b border-border bg-tech-grid">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="font-mono text-xs text-cyan-400 uppercase tracking-wider">Sekretariat</div>
+            <div class="font-mono text-xs text-on-band uppercase tracking-wider">Sekretariat</div>
             <h1 class="mt-2 font-display text-3xl sm:text-4xl font-extrabold">Kontak &amp; Aspirasi</h1>
-            <p class="mt-2 text-slate-300 max-w-2xl">
+            <p class="mt-2 text-band-muted max-w-2xl">
                 Saluran resmi komunikasi untuk mahasiswa Informatika, alumni, mitra komunitas, dan kolaborasi kegiatan.
             </p>
         </div>
@@ -20,20 +20,26 @@
                 <div class="rounded-2xl border border-line bg-white p-6 space-y-4">
                     <h2 class="font-display text-lg font-bold text-ink-950">Informasi Resmi</h2>
                     <div class="text-sm space-y-3">
-                        <div>
-                            <div class="font-mono text-xs uppercase text-ink-500">Email</div>
-                            <a href="mailto:{{ $orgSettings['email'] ?? 'hmif@itats.ac.id' }}" class="font-medium text-brand-600 hover:underline">
-                                {{ $orgSettings['email'] ?? 'hmif@itats.ac.id' }}
-                            </a>
-                        </div>
-                        <div>
-                            <div class="font-mono text-xs uppercase text-ink-500">Telepon Kampus</div>
-                            <div class="font-medium text-ink-900">{{ $orgSettings['phone'] ?? '+62 31 5991101' }}</div>
-                        </div>
-                        <div>
-                            <div class="font-mono text-xs uppercase text-ink-500">Alamat</div>
-                            <div class="text-ink-700 leading-relaxed">{{ $orgSettings['address'] ?? 'Jl. Arief Rachman Hakim No. 100, Surabaya 60117' }}</div>
-                        </div>
+                        @if(! empty($orgSettings['email']))
+                            <div>
+                                <div class="font-mono text-xs uppercase text-ink-500">Email</div>
+                                <a href="mailto:{{ $orgSettings['email'] }}" class="font-medium text-brand-600 hover:underline">
+                                    {{ $orgSettings['email'] }}
+                                </a>
+                            </div>
+                        @endif
+                        @if(! empty($orgSettings['phone']))
+                            <div>
+                                <div class="font-mono text-xs uppercase text-ink-500">Telepon Kampus</div>
+                                <div class="font-medium text-ink-900">{{ $orgSettings['phone'] }}</div>
+                            </div>
+                        @endif
+                        @if(! empty($orgSettings['address']))
+                            <div>
+                                <div class="font-mono text-xs uppercase text-ink-500">Alamat</div>
+                                <div class="text-ink-700 leading-relaxed">{{ $orgSettings['address'] }}</div>
+                            </div>
+                        @endif
                         @if(! empty($orgSettings['instagram_url']))
                             <div>
                                 <div class="font-mono text-xs uppercase text-ink-500">Instagram</div>

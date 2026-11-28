@@ -15,19 +15,50 @@
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="{{ asset('image/favicon.png') }}">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    {{-- Synchronous theme attribute initialization before stylesheets to prevent light/dark flash --}}
+    <script>
+        (function () {
+            try {
+                var stored = window.localStorage.getItem('theme');
+                var theme = stored === 'light' || stored === 'dark'
+                    ? stored
+                    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+
+    @php
+        $manifestPath = public_path('build/manifest.json');
+        $displayFontUrl = null;
+        if (is_file($manifestPath)) {
+            $manifest = json_decode((string) file_get_contents($manifestPath), true) ?: [];
+            foreach ($manifest as $key => $entry) {
+                if (str_contains((string) $key, 'bricolage-grotesque-latin-wght-normal') && ! empty($entry['file'])) {
+                    $displayFontUrl = asset('build/'.$entry['file']);
+                    break;
+                }
+            }
+        }
+    @endphp
+    @if($displayFontUrl)
+        <link rel="preload" href="{{ $displayFontUrl }}" as="font" type="font/woff2" crossorigin>
+    @endif
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('structured_data')
 </head>
-<body class="min-h-screen flex flex-col bg-surface text-ink-950 selection:bg-brand-600 selection:text-white">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-ink-950 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white">
-        Langsung ke konten utama
+<body class="min-h-screen flex flex-col bg-bg text-text selection:bg-primary selection:text-on-primary">
+    <a
+        href="#main-content"
+        class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-band focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-band-text"
+    >
+        Loncat ke konten utama
     </a>
 
-    @include('partials.navbar')
+    <x-navbar />
 
     <main id="main-content" class="flex-1">
         @include('partials.flash')
