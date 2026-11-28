@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::composer(['layouts.*', 'partials.*'], function ($view): void {
+        View::composer(['layouts.*', 'partials.*', 'components.*'], function ($view): void {
             $settings = [];
             $activePeriod = null;
             $openElection = null;
