@@ -26,9 +26,9 @@ class PublicPortalTest extends TestCase
             route('home'),
             route('about'),
             route('struktur'),
-            route('struktur', ['periode' => '2025/2026']),
             route('divisi.index'),
-            route('divisi.show', 'sistem-digital'),
+            route('divisi.show', 'psdm'),
+            route('divisi.show', 'litbang'),
             route('proker.index'),
             route('kegiatan.index'),
             route('kegiatan.show', Activity::firstOrFail()->slug),
@@ -60,7 +60,7 @@ class PublicPortalTest extends TestCase
 
     public function test_public_pages_do_not_expose_personal_npm_or_stale_branding(): void
     {
-        foreach ([route('about'), route('struktur'), route('struktur', ['periode' => '2025/2026'])] as $url) {
+        foreach ([route('about'), route('struktur'), route('divisi.show', 'psdm'), route('proker.index')] as $url) {
             $response = $this->get($url);
             $response->assertOk();
             $response->assertDontSee('06.2023');

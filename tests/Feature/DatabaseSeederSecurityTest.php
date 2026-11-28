@@ -4,9 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\Activity;
 use App\Models\Announcement;
+use App\Models\BoardMember;
+use App\Models\Division;
 use App\Models\Election;
 use App\Models\Period;
 use App\Models\User;
+use App\Models\WorkProgram;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -90,8 +93,11 @@ class DatabaseSeederSecurityTest extends TestCase
         $this->assertSame(User::ROLE_SUPER_ADMIN, $admin->role);
         $this->assertTrue(Hash::check('UniqueProductionSecret#9988', $admin->password));
 
-        // Verify demo content is strictly skipped in production.
-        $this->assertSame(0, Period::count());
+        // Verify official data runs in production while demo content is strictly skipped.
+        $this->assertSame(1, Period::count());
+        $this->assertSame(4, Division::count());
+        $this->assertSame(39, BoardMember::count());
+        $this->assertSame(12, WorkProgram::count());
         $this->assertSame(0, Activity::count());
         $this->assertSame(0, Announcement::count());
         $this->assertSame(0, Election::count());

@@ -54,6 +54,9 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Official Kabinet Asakusa 2026/2027 data runs in every environment (production included).
+        $this->call(OfficialDataSeeder::class);
+
         // Demo content is strictly excluded from production seeding.
         if (! app()->environment('production')) {
             $this->call(DemoContentSeeder::class);

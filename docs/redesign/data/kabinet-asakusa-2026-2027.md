@@ -1,174 +1,170 @@
 # Data Resmi Kepengurusan Kabinet Asakusa HMIF ITATS Periode 2026/2027
 
-**Status dokumen:** Draf ekstraksi R1D-a (menunggu *proofreading* dan persetujuan `APPROVE R1D-A` dari Kahim sebelum *seeding* ke database pada fase R1D-b).
+**Status dokumen:** Disetujui (`APPROVE R1D-A`) untuk ingest **R1D-b** ke `OfficialDataSeeder`. Memuat data resmi dari 3 PDF di `docs/redesign/source/` serta kelengkapan teks yang disetujui Kahim (tagline & deskripsi kabinet, nama & deskripsi 4 divisi, pemetaan divisi pengampu utama untuk 7 program lintas/BPH, serta email dan alamat resmi sekretariat).
 
 **Sumber berkas resmi (`docs/redesign/source/`, tidak dilacak Git):**
 1. `STRUKTUR KEPENGURUSAN KABINET ASAKUSA HMIF ITATS 2026_2027 - STRUKTUR KABINET ASAKUSA.pdf` (2 halaman; selanjutnya disingkat `STRUKTUR`)
 2. `STRUKTUR KEPENGURUSAN KABINET ASAKUSA HMIF ITATS 2026_2027 - BIODATA _ KELENGKAPAN KTM.pdf` (1 halaman; selanjutnya disingkat `BIODATA`)
 3. `STRUKTUR KEPENGURUSAN KABINET ASAKUSA HMIF ITATS 2026_2027 - PROGRAM KERJA _ RAB.pdf` (1 halaman; selanjutnya disingkat `PROKER`)
 
-> **Batasan privasi & kerahasiaan:** Sesuai ketentuan PRD US-13 / AC-13.3 dan keputusan D2, seluruh data pribadi berupa NPM (34 pengurus mahasiswa), NIP (5 pembina/pimpinan), nomor telepon/WhatsApp pribadi (20 individu unik di `STRUKTUR`, 18 di `BIODATA`), serta seluruh nominal dan persentase Rencana Anggaran Biaya (RAB) **dikecualikan sepenuhnya** dari berkas ini dan tidak akan dimasukkan ke Git maupun database portal publik.
+> **Batasan privasi & kerahasiaan:** Sesuai PRD US-13 / AC-13.3 dan *Hard Constraints*, seluruh NPM (34 pengurus mahasiswa), NIP (5 pembina/pimpinan), nomor telepon/WhatsApp pribadi (20 individu unik pada PDF serta nomor WhatsApp CP perorangan mantan kahim yang diajukan terpisah), dan seluruh nominal/persentase RAB **dikecualikan sepenuhnya** dari berkas ini, seeder, Git, dan halaman publik.
 
 ---
 
-## 1. Identitas Kabinet & Status Verifikasi Dokumen
+## 1. Identitas Kabinet & Keputusan Owner (`APPROVE R1D-A`)
 
-| Atribut | Nilai terekstrak dari PDF | Sumber rujukan |
+| Atribut | Nilai resmi | Sumber rujukan |
 |---|---|---|
 | Nama organisasi | Himpunan Mahasiswa Teknik Informatika (HMIF) ITATS | `STRUKTUR, halaman 1`; `BIODATA, halaman 1`; `PROKER, halaman 1` |
 | Nama kabinet | Kabinet Asakusa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1`; `PROKER, halaman 1` |
-| Periode kepengurusan | 2026/2027 | `STRUKTUR, halaman 1`; `BIODATA, halaman 1`; `PROKER, halaman 1` |
-| Tagline / tema resmi kabinet | Tidak dinyatakan di PDF (ketiga berkas tidak mencantumkan tagline maupun tema kabinet) | Verifikasi silang `STRUKTUR, halaman 1-2`; `BIODATA, halaman 1`; `PROKER, halaman 1` |
-| Status Sertijab dalam PDF | `UNVERIFIED: Sertijab status` — Tidak ada halaman pada ketiga PDF yang menyatakan Serah Terima Jabatan (Sertijab) telah terlaksana; `STRUKTUR` hanya mencatat `Mandat Musyawarah Mahasiswa` pada BPH Inti dan status onboarding `Anggota Baru (Oprec 2026) - Menunggu Unggah` | `STRUKTUR, halaman 1-2`; `BIODATA, halaman 1`; `PROKER, halaman 1` |
+| Periode kepengurusan | 2026/2027 (Aktif; belum ada periode arsip sampai snapshot situs live tersedia) | `STRUKTUR, halaman 1`; PRD AC-4.3 & AC-13.2 |
+| Tagline resmi kabinet | `CONNECT. INNOVATE. EMPOWER.` | Ketetapan Kahim pada `APPROVE R1D-A` (tidak tertulis di PDF) |
+| Deskripsi / Visi kabinet | Kabinet Asakusa merupakan kepengurusan Himpunan Mahasiswa Teknik Informatika ITATS Periode 2026/2027 yang berkomitmen membangun lingkungan organisasi yang kolaboratif, inovatif, dan berorientasi pada pengembangan potensi mahasiswa. Melalui empat divisi, Kabinet Asakusa berupaya menjadi wadah pengembangan kompetensi, kreativitas, komunikasi, serta kontribusi nyata bagi mahasiswa Teknik Informatika. | Ketetapan Kahim pada `APPROVE R1D-A` |
+| Tiga pilar / Misi kabinet | 1. **CONNECT:** Membangun konektivitas, komunikasi, dan kolaborasi antaranggota serta mahasiswa Teknik Informatika. 2. **INNOVATE:** Mendorong kreativitas, eksplorasi ide, dan inovasi untuk menghasilkan solusi serta karya yang bermanfaat. 3. **EMPOWER:** Mengembangkan potensi dan kompetensi mahasiswa agar mampu bertumbuh, mandiri, dan memberikan kontribusi nyata. | Ketetapan Kahim pada `APPROVE R1D-A` |
+| Status Sertijab dalam PDF | `UNVERIFIED: Sertijab status` di berkas PDF (`STRUKTUR` hanya mencatat `Mandat Musyawarah Mahasiswa` dan transisi berkas Oprec); Kahim mengonfirmasi secara lisan MUSHIM & Sertijab sudah terlaksana sebelum R0 | `STRUKTUR, halaman 1-2`; `BIODATA, halaman 1`; konfirmasi Kahim |
 
 ---
 
-## 2. Kontak Resmi (untuk Verifikasi Owner)
+## 2. Kontak Resmi (Terverifikasi Owner untuk `OrganizationSetting`)
 
-Bagian ini dipisahkan khusus untuk memverifikasi data kontak pada *footer* dan halaman `/kontak` (tindak lanjut F4). **Hasil pemeriksaan ketiga PDF resmi:**
-
-| Kanal kontak resmi organisasi | Tercantum di PDF? | Keterangan / temuan sumber |
+| Kanal kontak resmi | Nilai resmi yang disimpan di `OfficialDataSeeder` | Status & keterangan |
 |---|---|---|
-| Email resmi organisasi | Tidak tercantum | Ketiga PDF tidak memuat alamat email apa pun |
-| Nomor telepon / WhatsApp resmi sekretariat | Tidak tercantum | PDF hanya memuat nomor telepon/WhatsApp pribadi milik 2 pembina/pimpinan dan 18 pengurus mahasiswa eksisting (`20` individu unik di `STRUKTUR, halaman 1-2`; `18` di `BIODATA, halaman 1`; `16` anggota baru bertanda `-`) — **seluruhnya dikecualikan dan tidak ditayangkan** |
-| Alamat sekretariat resmi | Tidak tercantum | Ketiga PDF tidak memuat alamat sekretariat maupun kode pos |
-| Akun media sosial resmi | Tidak tercantum | Ketiga PDF tidak memuat tautan Instagram, GitHub, LinkedIn, maupun YouTube |
+| Email resmi organisasi | `hmifitats1991@gmail.com` | Disetujui Kahim untuk organisasi HMIF ITATS (bukan dari PDF; pengecualian resmi pola `@...`) |
+| Alamat sekretariat resmi | `Gedung A Kampus ITATS, Arief Rahman Hakim No.100, Klampis Ngasem, Kec. Sukolilo, Surabaya, Jawa Timur 60117` | Disetujui Kahim (alamat kampus & gedung sekretariat) |
+| Nomor telepon / WA sekretariat | Kosong (`''`) di `OfficialDataSeeder` | Nomor WA pribadi PDF (20 individu unik) dan nomor WhatsApp CP perorangan mantan kahim ditahan agar tidak melanggar larangan nomor WA pribadi / AC-13.3 di Git dan HTML publik |
+| Akun media sosial resmi | `https://www.instagram.com/hmif_itats/` | Akun resmi Instagram HMIF ITATS |
 
 ---
 
-## 3. Ringkasan Jumlah Resmi Kabinet Asakusa 2026/2027
+## 3. Ringkasan Jumlah Resmi Kabinet Asakusa 2026/2027 (Target Hitungan Database)
 
-| Kategori | Jumlah resmi PDF | Rincian | Sumber rujukan |
+| Kategori | Jumlah resmi | Rincian | Sumber rujukan |
 |---|---|---|---|
-| Pembina & Pimpinan Organisasi | 5 | 1 Pelindung, 3 Penasihat, 1 Dosen Penanggung Jawab | `STRUKTUR, halaman 1` |
-| Badan Pengurus Harian (BPH Inti) | 4 | 4 pengurus eksisting (Mandat Musyawarah Mahasiswa) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| Divisi fungsional resmi | 4 | PSDM, Litbang, Media Digital & HUMAS, Pengembangan Dana Usaha & Minat Bakat | `STRUKTUR, halaman 1` (tabel I no. 2–5) |
-| Pengurus Divisi PSDM | 8 | 1 Koordinator Divisi + 7 Anggota (2 eksisting, 6 baru Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| Pengurus Divisi Litbang | 7 | 1 Koordinator Divisi + 6 Anggota (5 eksisting, 2 baru Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| Pengurus Divisi Media Digital & HUMAS | 8 | 1 Koordinator Divisi + 7 Anggota (4 eksisting, 4 baru Oprec 2026) | `STRUKTUR, halaman 1-2`; `BIODATA, halaman 1` |
-| Pengurus Divisi Pengembangan Dana Usaha & Minat Bakat | 7 | 1 Koordinator Divisi + 6 Anggota (3 eksisting, 4 baru Oprec 2026) | `STRUKTUR, halaman 1-2`; `BIODATA, halaman 1` |
-| Total Pengurus Mahasiswa Aktif (BPH Inti + 4 Divisi) | 34 | 18 pengurus eksisting + 16 anggota baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| Total Seluruh Personil (Pembina/Pimpinan + Mahasiswa Aktif) | 39 | 5 pembina/pimpinan + 4 BPH Inti + 30 pengurus divisi | `STRUKTUR, halaman 1-2` |
-| Program Kerja Strategis | 12 | Matriks proker periode 2026/2027 (tanpa nominal RAB) | `PROKER, halaman 1` |
+| Periode aktif | **1** | `2026/2027` (`Kabinet Asakusa`, tanpa periode arsip) | `STRUKTUR, halaman 1`; AC-13.2 |
+| Pelindung, Penasihat & Pembina (`board_members`, `is_core=false`, `division_id=null`) | **5** | 1 Pelindung, 3 Penasihat, 1 Dosen Penanggung Jawab | `STRUKTUR, halaman 1` |
+| Badan Pengurus Harian (`board_members`, `is_core=true`, `division_id=null`) | **4** | Ketua Umum, Wakil Ketua Umum, Sekretaris Umum, Bendahara Umum | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| Divisi fungsional resmi (`divisions`) | **4** | `psdm`, `litbang`, `media-humas`, `danus` | `STRUKTUR, halaman 1`; ketetapan Kahim `APPROVE R1D-A` |
+| Pengurus Divisi PSDM | **8** | 1 Koordinator Divisi + 7 Anggota | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| Pengurus Divisi Litbang | **7** | 1 Koordinator Divisi + 6 Anggota | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| Pengurus Divisi Media HUMAS | **8** | 1 Koordinator Divisi + 7 Anggota | `STRUKTUR, halaman 1-2`; `BIODATA, halaman 1` |
+| Pengurus Divisi Danus | **7** | 1 Koordinator Divisi + 6 Anggota | `STRUKTUR, halaman 1-2`; `BIODATA, halaman 1` |
+| Total Pengurus Divisi (`division_id != null`) | **30** | `8 + 7 + 8 + 7` | `STRUKTUR, halaman 1-2` |
+| Total Pengurus Mahasiswa Aktif (`BPH + Divisi`) | **34** | `4 + 30` (`18` eksisting + `16` Oprec 2026) | `STRUKTUR, hal. 1`; `BIODATA, hal. 1` |
+| Total Baris `board_members` | **39** | `5` pembina/pimpinan + `4` BPH + `30` divisi | `STRUKTUR, halaman 1-2` |
+| Program Kerja Strategis (`work_programs`) | **12** | `6` dipetakan ke PSDM, `2` Litbang, `3` Media HUMAS, `1` Danus | `PROKER, halaman 1`; keputusan Opsi A `APPROVE R1D-A` |
 
 ---
 
 ## 4. Jajaran Pelindung, Penasihat & Pembina Organisasi (5 Personil)
 
-Sesuai ketentuan R1D-a, hanya nama dan jabatan/keterangan peran institusi yang diambil (tanpa NIP maupun nomor telepon/WhatsApp). Penulisan nama dan tanda baca gelar disalin persis sebagaimana tertulis di PDF sumber:
-
-| No | Kelompok / Kategori | Jabatan | Nama Lengkap | Keterangan Peran | Sumber |
-|---|---|---|---|---|---|
-| 1 | Pelindung | Pelindung | Dr. Mat Syai'in, S.T ., M.T ., Ph.D | Pimpinan Institusi — Rektor ITATS | `STRUKTUR, halaman 1` |
-| 2 | Penasihat | Penasihat 1 | Ahmad Yusuf Ismail, ST ., M.Sc., Ph.D | Pimpinan Institusi — Plt. Wakil Rektor 1 Bidang Kemahasiswaan ITATS | `STRUKTUR, halaman 1` |
-| 3 | Penasihat | Penasihat 2 | Fahmi Firdaus Alrizal, S.T ., M.T . | Pimpinan Institusi — Ka. Penalaran Bakat dan Minat ITATS | `STRUKTUR, halaman 1` |
-| 4 | Penasihat | Penasihat 3 | Dr. Rahmi Rizkiana Putri, S.ST ., M.Kom. | Pimpinan Prodi — Kepala Program Studi Teknik Informatika ITATS | `STRUKTUR, halaman 1` |
-| 5 | Dosen Penanggung Jawab | Dosen Penanggung Jawab | Muchamad Kurniawan, S.Kom., M.Kom | Dosen Pembina — Dosen Pembina HMIF ITATS | `STRUKTUR, halaman 1` |
+| No | Jabatan / Peran yang Disimpan | Nama Lengkap | Sumber |
+|---|---|---|---|
+| 1 | `Pelindung — Rektor ITATS` | `Dr. Mat Syai'in, S.T ., M.T ., Ph.D` | `STRUKTUR, halaman 1` |
+| 2 | `Penasihat 1 — Plt. Wakil Rektor 1 Bidang Kemahasiswaan ITATS` | `Ahmad Yusuf Ismail, ST ., M.Sc., Ph.D` | `STRUKTUR, halaman 1` |
+| 3 | `Penasihat 2 — Ka. Penalaran Bakat dan Minat ITATS` | `Fahmi Firdaus Alrizal, S.T ., M.T .` | `STRUKTUR, halaman 1` |
+| 4 | `Penasihat 3 — Kepala Program Studi Teknik Informatika ITATS` | `Dr. Rahmi Rizkiana Putri, S.ST ., M.Kom.` | `STRUKTUR, halaman 1` |
+| 5 | `Dosen Penanggung Jawab — Dosen Pembina HMIF ITATS` | `Muchamad Kurniawan, S.Kom., M.Kom` | `STRUKTUR, halaman 1` |
 
 ---
 
 ## 5. Badan Pengurus Harian — BPH Inti (4 Pengurus)
 
-| No | Nama Lengkap | Jabatan (`STRUKTUR` II & `BIODATA`) | Singkatan Tabel I (`STRUKTUR`) | Status Pengurus | Keterangan / Mandat | Sumber |
-|---|---|---|---|---|---|---|
-| 1 | Ahmad Rizqi Mubarok | Ketua Umum | Ketua Umum | BPH Inti (Eksisting) | Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 2 | Gansa Alega Putra Utomo | Wakil Ketua Umum | Waketum | BPH Inti (Eksisting) | Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 3 | Ridho Pangestu | Sekretaris Umum | Sekum | BPH Inti (Eksisting) | Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 4 | Nur Layli Ramadhani Sufyan | Bendahara Umum | Bendum | BPH Inti (Eksisting) | Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| No | Nama Lengkap | Jabatan | Status PDF | Sumber |
+|---|---|---|---|---|
+| 1 | `Ahmad Rizqi Mubarok` | `Ketua Umum` | BPH Inti (Eksisting) — Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 2 | `Gansa Alega Putra Utomo` | `Wakil Ketua Umum` | BPH Inti (Eksisting) — Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 3 | `Ridho Pangestu` | `Sekretaris Umum` | BPH Inti (Eksisting) — Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 4 | `Nur Layli Ramadhani Sufyan` | `Bendahara Umum` | BPH Inti (Eksisting) — Mandat Musyawarah Mahasiswa | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
 
 ---
 
 ## 6. Divisi Fungsional & Daftar Anggota (4 Divisi, 30 Pengurus Divisi)
 
-### 6.1 Divisi Pengembangan Sumber Daya Manusia (PSDM) — 8 Orang
+### 6.1 `DIV-01` — Pengembangan Sumber Daya Mahasiswa (PSDM) (`slug: psdm`, 8 Orang)
 
-- **Varian nama di PDF:** `Divisi Pengembangan Sumber Daya Manusia (PSDM)` (`STRUKTUR, halaman 1` bagian I); `Pengembangan Sumber Daya Manusia` (`STRUKTUR, halaman 1` bagian II; `BIODATA, halaman 1`); `PSDM` (`PROKER, halaman 1`).
-- **Deskripsi divisi di PDF:** Tidak dinyatakan di PDF (catatan kuota tabel I: `1 Koordinator + 7 Anggota`, `Penambahan Anggota Baru Revisi 1 (Vincent Lee Kurniawan)`).
-- **Koordinator Divisi:** Aryo Syarif Kamal Akbar (`STRUKTUR, halaman 1`; `BIODATA, halaman 1`).
+- **Deskripsi ringkas (`short_description`):** Pembinaan, kaderisasi, kepemimpinan, dan pengembangan kapasitas mahasiswa. *(Ketetapan Kahim `APPROVE R1D-A`)*
+- **Deskripsi lengkap (`description`):** Divisi yang berfokus pada pengembangan kualitas sumber daya mahasiswa melalui pembinaan, kaderisasi, peningkatan kapasitas, serta penguatan karakter dan kepemimpinan. PSDM berperan dalam menciptakan lingkungan organisasi yang mendorong setiap anggota untuk berkembang secara personal maupun profesional. (Tagline: `DEVELOP PEOPLE, BUILD LEADERS.`) *(Ketetapan Kahim `APPROVE R1D-A`)*
 
-| No Urut `STRUKTUR` | Nama Lengkap | Jabatan (`STRUKTUR`) | Jabatan (`BIODATA`) | Status Pengurus | Catatan PDF | Sumber |
-|---|---|---|---|---|---|---|
-| 10 | Aryo Syarif Kamal Akbar | Koordinator Divisi | Koordinator Divisi | Pengurus Eksisting (2025) | Koordinator / PJ Divisi PSDM | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 11 | Moch Syahril Akbar | Anggota 1 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting PSDM | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 12 | Surya Andi Pranata | Anggota 2 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #12 (Minat PSDM) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 13 | Bagus Choirul Anam | Anggota 3 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #4 (Minat PSDM) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 14 | Zidane Ishomuddin Dzaki | Anggota 4 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #9 (Minat PSDM) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 15 | Arik Al Fikri | Anggota 5 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #2 (Minat PSDM) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 16 | Naufal Muthi Haqqi | Anggota 6 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #7 (Minat PSDM) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 17 | Vincent Lee Kurniawan | Anggota 7 | Anggota | Anggota Baru (Oprec 2026) | Penambahan Anggota Baru Revisi 1 (PSDM) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-
----
-
-### 6.2 Divisi Penelitian dan Pengembangan (Litbang) — 7 Orang
-
-- **Varian nama di PDF:** `Divisi Penelitian dan Pengembangan (Litbang)` (`STRUKTUR, halaman 1` bagian I); `Penelitian dan Pengembangan` (`STRUKTUR, halaman 1` bagian II; `BIODATA, halaman 1`); `Litbang` (`PROKER, halaman 1`).
-- **Deskripsi divisi di PDF:** Tidak dinyatakan di PDF (catatan kuota tabel I: `1 Koordinator + 6 Anggota`, `Formasi Ideal Litbang (5 Eksisting + 2 Baru)`).
-- **Koordinator Divisi:** Wahyu Aditia Putra (`STRUKTUR, halaman 1`; `BIODATA, halaman 1`).
-
-| No Urut `STRUKTUR` | Nama Lengkap | Jabatan (`STRUKTUR`) | Jabatan (`BIODATA`) | Status Pengurus | Catatan PDF | Sumber |
-|---|---|---|---|---|---|---|
-| 18 | Wahyu Aditia Putra | Koordinator Divisi | Koordinator Divisi | Pengurus Eksisting (2025) | Koordinator / PJ Divisi Litbang | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 19 | Achmad Ali Fatahillah | Anggota 1 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting Litbang | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 20 | Radith Ramzy Razzan Alasfyi | Anggota 2 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting (Terdaftar Oprec #15) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 21 | Rizki Okta Lesmana | Anggota 3 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting (Terdaftar Oprec #13) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 22 | Andika Dyan Syahputra | Anggota 4 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting (Terdaftar Oprec #14) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 23 | Dafa Putra Fitrianto | Anggota 5 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #18 (Minat Litbang) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 24 | Trionaldy Junyan Pradewa | Anggota 6 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #8 (Minat Litbang) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| Urut | Nama Lengkap | Jabatan | Status PDF | Sumber |
+|---|---|---|---|---|
+| 10 | `Aryo Syarif Kamal Akbar` | `Koordinator Divisi` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 11 | `Moch Syahril Akbar` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 12 | `Surya Andi Pranata` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 13 | `Bagus Choirul Anam` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 14 | `Zidane Ishomuddin Dzaki` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 15 | `Arik Al Fikri` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 16 | `Naufal Muthi Haqqi` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 17 | `Vincent Lee Kurniawan` | `Anggota` | Anggota Baru (Oprec 2026) — Penambahan Revisi 1 | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
 
 ---
 
-### 6.3 Divisi Media Digital dan Hubungan Masyarakat (HUMAS) — 8 Orang
+### 6.2 `DIV-02` — Penelitian dan Pengembangan (Litbang) (`slug: litbang`, 7 Orang)
 
-- **Varian nama di PDF:** `Divisi Media Digital dan Hubungan Masyarakat (HUMAS)` (`STRUKTUR, halaman 1` bagian I); `Media Digital dan HUMAS` (`STRUKTUR, halaman 1-2` bagian II; `BIODATA, halaman 1`); `HUMAS` (`PROKER, halaman 1`).
-- **Deskripsi divisi di PDF:** Tidak dinyatakan di PDF (catatan kuota tabel I: `1 Koordinator + 7 Anggota`, `Penambahan Revisi 2 (Ari Irawan) & Rivan Tetap di HUMAS`).
-- **Koordinator Divisi:** M. Farhan Magribi (`STRUKTUR, halaman 1`; `BIODATA, halaman 1`).
+- **Deskripsi ringkas (`short_description`):** Penelitian, eksplorasi teknologi, inovasi, dan pengembangan wawasan. *(Ketetapan Kahim `APPROVE R1D-A`)*
+- **Deskripsi lengkap (`description`):** Divisi yang berfokus pada pengembangan wawasan, pengetahuan, dan kemampuan intelektual mahasiswa melalui penelitian, eksplorasi teknologi, serta pengembangan inovasi. Litbang menjadi wadah untuk mendorong budaya berpikir kritis, analitis, kreatif, dan solutif dalam menghadapi perkembangan teknologi informasi. (Tagline: `EXPLORE IDEAS, CREATE INNOVATION.`) *(Ketetapan Kahim `APPROVE R1D-A`)*
 
-| No Urut `STRUKTUR` | Nama Lengkap | Jabatan (`STRUKTUR`) | Jabatan (`BIODATA`) | Status Pengurus | Catatan PDF | Sumber |
-|---|---|---|---|---|---|---|
-| 25 | M. Farhan Magribi | Koordinator Divisi | Koordinator Divisi | Pengurus Eksisting (2025) | Koordinator / PJ Divisi Media Digital & HUMAS | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 26 | Abdiel Rozi Syahputra | Anggota 1 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting HUMAS | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
-| 27 | Rivan Pramudya Erlangga | Anggota 2 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting HUMAS (Terdaftar Oprec #10; `BIODATA`: Tetap di HUMAS) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 28 | Aditya Maulana Zidqy | Anggota 3 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting HUMAS | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 29 | Rafi Satrya Rahmansyah | Anggota 4 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #5 (Minat HUMAS) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 30 | Drajat Febrio Ardi | Anggota 5 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #6 (Minat HUMAS) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 31 | Ady Setiawan | Anggota 6 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #11 (Minat HUMAS) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 32 | Ari Irawan | Anggota 7 | Anggota | Anggota Baru (Oprec 2026) | Penambahan Anggota Baru Revisi 2 (Minat Media Digital & HUMAS) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| Urut | Nama Lengkap | Jabatan | Status PDF | Sumber |
+|---|---|---|---|---|
+| 18 | `Wahyu Aditia Putra` | `Koordinator Divisi` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 19 | `Achmad Ali Fatahillah` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 20 | `Radith Ramzy Razzan Alasfyi` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 21 | `Rizki Okta Lesmana` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 22 | `Andika Dyan Syahputra` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 23 | `Dafa Putra Fitrianto` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 24 | `Trionaldy Junyan Pradewa` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
 
 ---
 
-### 6.4 Divisi Pengembangan Dana Usaha dan Minat Bakat — 7 Orang
+### 6.3 `DIV-03` — Media Digital dan Hubungan Masyarakat (Media HUMAS) (`slug: media-humas`, 8 Orang)
 
-- **Varian nama di PDF:** `Divisi Pengembangan Dana Usaha dan Minat Bakat` (`STRUKTUR, halaman 1` bagian I & judul seksi F); `Pengembangan Dana Usaha & Minat Bakat` (`STRUKTUR, halaman 2` tabel II; `BIODATA, halaman 1`); `Danus & Minat Bakat` (`PROKER, halaman 1`).
-- **Deskripsi divisi di PDF:** Tidak dinyatakan di PDF (catatan kuota tabel I: `1 Koordinator + 6 Anggota`, `Formasi Ideal Danus & Minat Bakat (Pemerataan Opsi 2)`).
-- **Koordinator Divisi:** Ardhi Fadli (`STRUKTUR, halaman 2`; `BIODATA, halaman 1`).
+- **Deskripsi ringkas (`short_description`):** Publikasi, komunikasi, dokumentasi, dan citra organisasi. *(Ketetapan Kahim `APPROVE R1D-A`)*
+- **Deskripsi lengkap (`description`):** Divisi yang bertanggung jawab dalam mengelola komunikasi, informasi, publikasi, dan citra organisasi. Media HUMAS menjadi penghubung antara HMIF ITATS dengan mahasiswa serta pihak eksternal melalui pengelolaan media digital, produksi konten kreatif, dokumentasi, dan penyebaran informasi organisasi. (Tagline: `CONNECT PEOPLE, SHARE INFORMATION.`) *(Ketetapan Kahim `APPROVE R1D-A`)*
 
-| No Urut `STRUKTUR` | Nama Lengkap | Jabatan (`STRUKTUR`) | Jabatan (`BIODATA`) | Status Pengurus | Catatan PDF | Sumber |
-|---|---|---|---|---|---|---|
-| 33 | Ardhi Fadli | Koordinator Divisi | Koordinator Divisi | Pengurus Eksisting (2025) | Koordinator / PJ Divisi Danus & Minat Bakat | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 34 | Rafly Rizki Pratama | Anggota 1 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting Danus & Minat Bakat | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 35 | Muhammad Rifqi | Anggota 2 | Anggota | Pengurus Eksisting (2025) | Anggota Eksisting Danus & Minat Bakat | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 36 | Rizki Eka Maulana | Anggota 3 | Anggota | Anggota Baru (Oprec 2026) | Lolos Oprec #16 (Minat Danus & Minat Bakat) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 37 | Albertho Octaviano Rumagit Rachman | Anggota 4 | Anggota | Anggota Baru (Oprec 2026) | Pemerataan Kuota (Opsi 2 Catatan Panitia: Danus) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 38 | M. Sevencho Wijayanto Putra | Anggota 5 | Anggota | Anggota Baru (Oprec 2026) | Pemerataan Kuota (Opsi 2 Catatan Panitia: Danus) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
-| 39 | Ahmad Shohibul Wafa | Anggota 6 | Anggota | Anggota Baru (Oprec 2026) | Pemerataan Acak Terukur Pool HUMAS | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| Urut | Nama Lengkap | Jabatan | Status PDF | Sumber |
+|---|---|---|---|---|
+| 25 | `M. Farhan Magribi` | `Koordinator Divisi` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 26 | `Abdiel Rozi Syahputra` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 1`; `BIODATA, halaman 1` |
+| 27 | `Rivan Pramudya Erlangga` | `Anggota` | Pengurus Eksisting (2025) — Tetap di HUMAS | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 28 | `Aditya Maulana Zidqy` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 29 | `Rafi Satrya Rahmansyah` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 30 | `Drajat Febrio Ardi` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 31 | `Ady Setiawan` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 32 | `Ari Irawan` | `Anggota` | Anggota Baru (Oprec 2026) — Penambahan Revisi 2 | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
 
 ---
 
-## 7. Matriks Program Kerja Strategis Kabinet Asakusa 2026/2027 (12 Program)
+### 6.4 `DIV-04` — Pengembangan Dana Usaha dan Minat Bakat (Danus) (`slug: danus`, 7 Orang)
 
-Seluruh nominal dan persentase RAB pada kolom Rencana Anggaran Biaya **dikecualikan sepenuhnya**. PDF hanya menyatakan **Bulan Pelaksanaan** (tidak menyebut tanggal hari spesifik) dan **tidak mencantumkan status** pelaksanaan masing-masing program.
+- **Deskripsi ringkas (`short_description`):** Kewirausahaan, pengembangan dana, minat, dan bakat mahasiswa. *(Ketetapan Kahim `APPROVE R1D-A`)*
+- **Deskripsi lengkap (`description`):** Divisi yang berfokus pada pengembangan potensi kewirausahaan, pengelolaan kegiatan usaha, serta penyaluran minat dan bakat mahasiswa. Danus berperan dalam mendukung kemandirian finansial organisasi sekaligus menyediakan ruang bagi mahasiswa untuk mengeksplorasi kreativitas, mengembangkan keterampilan, dan menyalurkan bakat di berbagai bidang. (Tagline: `BUILD OPPORTUNITIES, UNLEASH POTENTIAL.`) *(Ketetapan Kahim `APPROVE R1D-A`)*
 
-| No | Nama Kegiatan | Tingkat Kegiatan | Divisi Penanggung Jawab (Sesuai PDF) | Deskripsi Kegiatan | Bulan Pelaksanaan (Sesuai PDF) | Status di PDF | Sumber |
-|---|---|---|---|---|---|---|---|
-| 1 | Musyawarah Himpunan (MUSHIM) HMIF ITATS 2026 | Internal | BPH Inti & PSDM | Pelaksanaan Musyawarah Himpunan sebagai forum evaluasi, pembahasan AD/ART & GBHO, serta pertanggungjawaban kepengurusan. | Oktober 2026 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 2 | Open Recruitment & Member Onboarding HMIF ITATS 2026 | Internal | PSDM | Pelaksanaan penerimaan anggota baru HMIF ITATS yang dilanjutkan dengan proses onboarding dan pengenalan struktur organisasi. | Oktober - November 2026 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 3 | Pengembangan Manajemen Organisasi (PMO) HMIF ITATS 2026 | Internal | PSDM | Kegiatan pengembangan kemampuan dasar organisasi bagi pengurus dan anggota baru HMIF ITATS meliputi tata kelola dan manajemen proyek. | November - Desember 2026 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 4 | HMIF Competency Mapping | Internal | PSDM & Litbang | Kegiatan pemetaan minat, bakat, kemampuan dasar, serta kebutuhan pengembangan hard skill dan soft skill seluruh anggota. | November - Desember 2026 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 5 | HMIF Community | Internal | Litbang | Pembentukan komunitas belajar (study group) berbasis minat dan kompetensi mahasiswa Teknik Informatika ITATS. | Desember 2026 - Juli 2027 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 6 | Pengadaan dan Penjualan Atribut HMIF & Teknik Informatika | Internal | Danus & Minat Bakat | Pengadaan dan penjualan atribut resmi seperti baju PDH serta merchandise HMIF dan Program Studi Teknik Informatika. | November 2026 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 7 | Penyambutan Wisudawan Ke-75 | Internal | Seluruh Divisi | Kegiatan penyambutan dan arak-arakan wisudawan ke-75 Program Studi Teknik Informatika oleh HMIF ITATS. | November 2026 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 8 | Bakti Sosial & Technology for Community | Internal & Eksternal | HUMAS & Litbang | Kegiatan sosial, edukasi teknologi, dan pengabdian kepada masyarakat yang melibatkan mahasiswa Teknik Informatika. | Februari 2027 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 9 | Penyambutan Wisudawan Ke-76 | Internal | Seluruh Divisi | Kegiatan penyambutan wisudawan ke-76 Program Studi Teknik Informatika oleh HMIF ITATS. | Mei 2027 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 10 | Debat Calon Ketua HMIF & Pemilu Raya 2027/2028 | Internal | PSDM & BPH | Pelaksanaan regenerasi Ketua Himpunan HMIF melalui sosialisasi, pendaftaran, seleksi, debat publik, dan pemungutan suara. | September 2027 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 11 | Musyawarah Himpunan Periode 2027/2028 | Internal | BPH Inti | Pelaksanaan sidang pleno revisi AD/ART, GBHO, dan Laporan Pertanggungjawaban (LPJ) akhir periode HMIF ITATS. | Oktober 2027 | Tidak dinyatakan | `PROKER, halaman 1` |
-| 12 | HMIF Academy: Hard Skill & Soft Skill Development | Internal | Litbang | Program pengembangan kompetensi mahasiswa melalui rangkaian workshop, sharing session, mentoring, dan praktik proyek. | Januari - Juni 2027 | Tidak dinyatakan | `PROKER, halaman 1` |
+| Urut | Nama Lengkap | Jabatan | Status PDF | Sumber |
+|---|---|---|---|---|
+| 33 | `Ardhi Fadli` | `Koordinator Divisi` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 34 | `Rafly Rizki Pratama` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 35 | `Muhammad Rifqi` | `Anggota` | Pengurus Eksisting (2025) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 36 | `Rizki Eka Maulana` | `Anggota` | Anggota Baru (Oprec 2026) | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 37 | `Albertho Octaviano Rumagit Rachman` | `Anggota` | Anggota Baru (Oprec 2026) — Pemerataan Kuota | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 38 | `M. Sevencho Wijayanto Putra` | `Anggota` | Anggota Baru (Oprec 2026) — Pemerataan Kuota | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+| 39 | `Ahmad Shohibul Wafa` | `Anggota` | Anggota Baru (Oprec 2026) — Pool HUMAS | `STRUKTUR, halaman 2`; `BIODATA, halaman 1` |
+
+---
+
+## 7. Matriks 12 Program Kerja Strategis (Tanpa Nominal RAB)
+
+Sesuai ketetapan Opsi A (skema `work_programs.division_id NOT NULL` tanpa migrasi baru), 7 proker lintas divisi/BPH dipetakan ke divisi pengampu utama dengan mempertahankan catatan penanggung jawab asli PDF di deskripsinya. PDF tidak mencantumkan tanggal hari maupun status pelaksanaan, sehingga `target_date = null` dan `status = 'planned'`.
+
+| No | Nama Kegiatan | Slug | Divisi PDF | Divisi Pengampu (`division_slug`) | Periode & Lingkup (`PROKER, halaman 1`) |
+|---|---|---|---|---|---|
+| 1 | `Musyawarah Himpunan (MUSHIM) HMIF ITATS 2026` | `musyawarah-himpunan-mushim-hmif-itats-2026` | BPH Inti & PSDM | `psdm` | Oktober 2026 · Internal |
+| 2 | `Open Recruitment & Member Onboarding HMIF ITATS 2026` | `open-recruitment-member-onboarding-hmif-itats-2026` | PSDM | `psdm` | Oktober - November 2026 · Internal |
+| 3 | `Pengembangan Manajemen Organisasi (PMO) HMIF ITATS 2026` | `pengembangan-manajemen-organisasi-pmo-hmif-itats-2026` | PSDM | `psdm` | November - Desember 2026 · Internal |
+| 4 | `HMIF Competency Mapping` | `hmif-competency-mapping` | PSDM & Litbang | `psdm` | November - Desember 2026 · Internal |
+| 5 | `HMIF Community` | `hmif-community` | Litbang | `litbang` | Desember 2026 - Juli 2027 · Internal |
+| 6 | `Pengadaan dan Penjualan Atribut HMIF & Teknik Informatika` | `pengadaan-dan-penjualan-atribut-hmif-teknik-informatika` | Danus & Minat Bakat | `danus` | November 2026 · Internal |
+| 7 | `Penyambutan Wisudawan Ke-75` | `penyambutan-wisudawan-ke-75` | Seluruh Divisi | `media-humas` | November 2026 · Internal |
+| 8 | `Bakti Sosial & Technology for Community` | `bakti-sosial-technology-for-community` | HUMAS & Litbang | `media-humas` | Februari 2027 · Internal & Eksternal |
+| 9 | `Penyambutan Wisudawan Ke-76` | `penyambutan-wisudawan-ke-76` | Seluruh Divisi | `media-humas` | Mei 2027 · Internal |
+| 10 | `Debat Calon Ketua HMIF & Pemilu Raya 2027/2028` | `debat-calon-ketua-hmif-pemilu-raya-2027-2028` | PSDM & BPH | `psdm` | September 2027 · Internal |
+| 11 | `Musyawarah Himpunan Periode 2027/2028` | `musyawarah-himpunan-periode-2027-2028` | BPH Inti | `psdm` | Oktober 2027 · Internal |
+| 12 | `HMIF Academy: Hard Skill & Soft Skill Development` | `hmif-academy-hard-skill-soft-skill-development` | Litbang | `litbang` | Januari - Juni 2027 · Internal |
