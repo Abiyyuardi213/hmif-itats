@@ -1,61 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Portal Web HMIF ITATS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Portal informasi resmi, manajemen organisasi, dan sistem E-Voting terverifikasi **Himpunan Mahasiswa Teknik Informatika (HMIF)** — Institut Teknologi Adhi Tama Surabaya (ITATS).
 
-## About Laravel
+## Arsitektur & Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Portal Publik Dinamis:** Beranda (statistik terhitung langsung dari database), Tentang & Visi/Misi per periode, Struktur Kepengurusan (tanpa mengekspos NPM publik sesuai prinsip privasi data/UU PDP), Profil Divisi, Program Kerja, Kegiatan, Pengumuman, dan Kontak.
+- **Panel Admin CMS & RBAC:** Manajemen Periode/Kabinet, Divisi, Pengurus, Program Kerja, Kegiatan, Pengumuman, Pesan Masuk, dan Audit Log untuk pengurus inti & pengelola portal.
+- **Sistem E-Voting Pemilu Terverifikasi:**
+  - Daftar Pemilih Tetap (DPT) dengan penyimpanan identifier ter-hash (HMAC-SHA256) & email wajib terverifikasi.
+  - Token surat suara sekali pakai (*single-use hashed token*) dengan masa berlaku terbatas.
+  - Pemisahan identitas pemilih (*eligible_voters*) dan suara anonim (*votes*) dalam transaksi database atomik (*pessimistic lock*) guna menjaga kerahasiaan suara dan mencegah *double voting*.
+- **SEO & Performa:** Meta title & description dinamis per halaman, Open Graph, canonical URL, `sitemap.xml` otomatis, Tailwind CSS v4 + Vite bundling, dan aset gambar teroptimasi.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prasyarat Sistem
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP `>= 8.2` (ekstensi: `pdo_sqlite`/`pdo_mysql`, `gd`, `mbstring`, `openssl`, `fileinfo`, `curl`)
+- Composer `>= 2.x`
+- Node.js `>= 20` & NPM
 
-## Learning Laravel
+## Instalasi Lokal
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```powershell
+git clone <url-repositori-organisasi> hmif-itats
+cd hmif-itats
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+composer install
+npm install
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+copy .env.example .env
+php artisan key:generate
+```
 
-## Laravel Sponsors
+### Kredensial Seeder Admin (`ADMIN_SEED_EMAIL` & `ADMIN_SEED_PASSWORD`)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+`DatabaseSeeder` membaca dua variabel lingkungan dari `.env`:
 
-### Premium Partners
+- `ADMIN_SEED_EMAIL`: alamat email akun `super_admin` awal.
+- `ADMIN_SEED_PASSWORD`: kata sandi akun `super_admin` awal (**minimal 12 karakter** di semua environment).
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Perilaku `php artisan db:seed`:
+- Di **`local` / `testing`**: bila `ADMIN_SEED_PASSWORD` dikosongkan, seeder menghasilkan kata sandi acak dan menampilkannya satu kali pada output konsol (tidak ditulis ke log). Seeder juga memanggil `DemoContentSeeder` untuk mengisi data contoh lokal.
+- Di **`production`**: seeder **membatalkan proses (`abort`)** bila `ADMIN_SEED_EMAIL` atau `ADMIN_SEED_PASSWORD` kosong, kurang dari 12 karakter, atau masih memakai kata sandi bawaan lama. Di `production`, `DatabaseSeeder` **hanya** membuat/memperbarui akun `super_admin` pada tabel `users` dan **tidak** menyeed data demo (`DemoContentSeeder` tidak dijalankan).
 
-## Contributing
+Jika menggunakan SQLite untuk pengembangan lokal:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```powershell
+New-Item -ItemType File -Path database/database.sqlite -Force
+php artisan migrate --seed
+php artisan storage:link
+```
 
-## Code of Conduct
+Jalankan server pengembangan & Vite:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```powershell
+composer dev
+```
 
-## Security Vulnerabilities
+Atau secara terpisah:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```powershell
+npm run build
+php artisan serve
+```
 
-## License
+## Pengujian & Audit Keamanan
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```powershell
+composer audit
+npm audit --omit=dev
+php vendor/bin/pint --test
+php artisan test
+php artisan route:list --except-vendor
+```
+
+## Tata Kelola Pengembangan
+
+1. Gunakan branch `feature/<nama-fitur>` atau `fix/<nama-perbaikan>` dari `main`.
+2. Jangan pernah meng-commit `.env`, kredensial database, dump data pemilih produksi, maupun berkas PDF/screenshot referensi di `docs/redesign/source/` dan `docs/redesign/reference/`.
+3. Pastikan seluruh test dan CI checks lulus melalui Pull Request sebelum merge ke `main`.

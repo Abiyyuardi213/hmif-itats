@@ -1,11 +1,180 @@
 @import 'tailwindcss';
+@import './fonts.css';
+@import './tokens.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+    --font-display: var(--font-display);
+    --font-sans: var(--font-sans);
+    --font-editorial: var(--font-editorial);
+    --font-mono: var(--font-mono);
+
+    /* Semantic colors */
+    --color-bg: var(--bg);
+    --color-bg-soft: var(--bg-soft);
+    --color-surface: var(--surface);
+    --color-surface-raised: var(--surface-raised);
+    --color-border: var(--border);
+    --color-border-input: var(--border-input);
+    --color-text: var(--text);
+    --color-text-muted: var(--text-muted);
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-on-primary: var(--on-primary);
+    --color-link: var(--link);
+    --color-accent: var(--accent);
+    --color-focus-ring: var(--focus-ring);
+    --color-band: var(--band);
+    --color-on-band: var(--on-band);
+    --color-band-text: var(--band-text);
+    --color-band-muted: var(--band-muted);
+    --color-border-on-band: var(--border-on-band);
+    --color-success: var(--success);
+    --color-danger: var(--danger);
+    --color-success-surface: var(--success-surface);
+    --color-danger-surface: var(--danger-surface);
+    --color-warning-surface: var(--warning-surface);
+    --color-scrim: var(--scrim);
+    --color-plate: var(--plate-bg);
+
+    /* Legacy aliases for admin panel — delete when admin is restyled */
+    --color-ink-950: var(--text);
+    --color-ink-900: var(--text);
+    --color-ink-700: var(--text-muted);
+    --color-ink-600: var(--text-muted);
+    --color-ink-500: var(--text-muted);
+    --color-brand-700: var(--link);
+    --color-brand-600: var(--link);
+    --color-brand-500: var(--focus-ring);
+    --color-brand-100: var(--bg-soft);
+    --color-brand-50: var(--bg-soft);
+    --color-cyan-600: var(--link);
+    --color-cyan-500: var(--accent);
+    --color-cyan-400: var(--on-band);
+    --color-line: var(--border);
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        font-family: var(--font-sans);
+    }
+
+    body {
+        font-family: var(--font-sans);
+        color: var(--text);
+        background-color: var(--bg);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .font-display {
+        font-family: var(--font-display);
+        letter-spacing: -0.02em;
+    }
+
+    :where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+        outline: 3px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+}
+
+.font-editorial {
+    font-family: var(--font-editorial);
+    font-style: italic;
+}
+
+.hmif-icon:not(.hidden) {
+    display: inline-flex;
+}
+
+.shadow-card {
+    box-shadow: var(--card-shadow);
+}
+
+/* Single orchestrated hero headline reveal (disabled under reduced-motion) */
+@keyframes hero-reveal {
+    from {
+        clip-path: inset(0 0 100% 0);
+        opacity: 0;
+    }
+    to {
+        clip-path: inset(0 0 0 0);
+        opacity: 1;
+    }
+}
+
+.hero-line {
+    animation: hero-reveal 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Pure CSS infinite marquee ticker (pauses on hover, focus, or explicit toggle) */
+@keyframes hmif-ticker-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.ticker-track {
+    display: flex;
+    width: max-content;
+    animation: hmif-ticker-scroll 38s linear infinite;
+}
+
+[data-ticker]:hover .ticker-track,
+[data-ticker]:focus-within .ticker-track,
+[data-ticker][data-paused='true'] .ticker-track {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .hero-line {
+        animation: none;
+        clip-path: none;
+        opacity: 1;
+    }
+
+    .ticker-track {
+        animation: none;
+        width: auto;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+    }
+
+    [data-ticker-clone] {
+        display: none;
+    }
+
+    .window-card-tilted {
+        transform: none !important;
+    }
+}
+
+/* Subtle structural backgrounds kept for existing admin/un-redesigned sections until R3 */
+.bg-tech-grid {
+    background-image:
+        linear-gradient(to right, color-mix(in srgb, var(--band-text) 7%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in srgb, var(--band-text) 7%, transparent) 1px, transparent 1px);
+    background-size: 36px 36px;
+}
+
+.bg-light-grid {
+    background-image:
+        linear-gradient(to right, var(--border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 32px 32px;
 }
